@@ -1,8 +1,10 @@
-export default function Sidebar() {
-    return <aside className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-tr-xl">
-        <h2 className="mb-8 font-bold uppercase md:text-xl text-stone-200 ">Yummy</h2>
-        <div>
-            <button className="px-4 py-2 text-xs md:text-base rounded-md bg-stone-700 text-stone-400 hover:bg-stone-600 hover:text-stone-100">+ Afegir Recepta</button>
-        </div>
+import Image from "next/image";
+
+export default function Sidebar({ setCurrentTab }) {
+    return <aside className="flex flex-col align-center w-1/3 px-8 py-16 bg-slate-950 text-stone-50 md:w-72 rounded-tr-xl shadow-2xl">
+        <Image src="/assets/yummy.png" width={200} height={400} alt="logo"></Image>
+        <h2 className="mb-8 font-bold font-mono text-center md:text-4xl text-stone-200 ">Yummy</h2>
+        <button onClick={() => setCurrentTab('new-recipe')} className="btn btn-outline btn-neutral md:text-base">+ Afegir Recepta</button>
+        <button onClick={() => setCurrentTab('view-recipes')} className=" mt-4 btn btn-warning md:text-base"> Veure Receptes </button>
     </aside>
 }
