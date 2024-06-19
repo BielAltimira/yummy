@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  background: rgb(243, 243, 243);
+}
+
+
 body {
   background: rgb(243, 243, 243);
 }

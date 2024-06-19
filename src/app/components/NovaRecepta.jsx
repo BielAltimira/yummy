@@ -1,10 +1,56 @@
+import { useState } from "react";
+
 export default function NovaRecepta({ setCurrentTab }) {
-    return <div className="w-[35rem] mt-16">
-        <menu className="flex items-center justify-center gap-4 my-4">
-            <li><button className="btn btn-outline text-black rounded-md">Cancelar</button></li>
-            <li><button className="btn rounded-md text-white ">Guardar</button></li>
-        </menu>
-        <form>
-        </form>
+    const [ingredients, setIngredients] = useState([]);
+    const [inputIngredient, setInputIngredient] = useState('');
+    const [inputQuantity, setInputQuantity] = useState('');
+
+    const addIngredient = () =>{
+        setIngredients([...ingredients, [inputIngredient, inputQuantity]]);
+    };
+
+    return <div className="h-screen -mt-8 w-full pt-16 flex flex-col">
+        <div className="w-1/2 pl-4">
+            <menu className="flex items-center justify-end gap-4 my-4">
+                <li><button onClick={() => setCurrentTab('no-selection')} className="btn btn-outline text-black rounded-md">Cancel·lar</button></li>
+                <li><button className="btn btn-warning rounded-md ">Guardar</button></li>
+            </menu>
+            <form>
+                <div className="mb-8">
+                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Nom de la recepta</label>
+                    <input type="text" placeholder="Sopa de macaco" className="input text-black input-bordered w-full bg-stone-200" />
+                </div>
+                <div className="mb-8">
+                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">recepta</label>
+                    <textarea className="textarea textarea-bordered w-full bg-stone-200 text-black h-40" placeholder="Fer bullir aigua i afegir sal..."></textarea>
+                </div>
+                 <div className="mb-8">
+                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Afegeix una imatge</label>
+                    <input type="file" className="file-input file-input-bordered bg-stone-200 w-full max-w-xs" />
+                </div>
+            </form>
+            <div className="mb-8">
+                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">llist d'Ingredients</label>
+                    <div className="w-full flex flew-row">
+                        <label className="mt-4 block mb-2 text-sm font-bold text-stone-500 w-2/3">Ingredient</label>
+                        <label className="mt-4 block mb-2 text-sm font-bold text-stone-500 ml-2 w-auto">Quantitat</label>
+                    </div>
+                    <input type="text" value={inputIngredient} onChange={(i) => setInputIngredient(i.target.value)} placeholder="Culo de mono" className="input text-black input-bordered w-2/3 bg-stone-200" />
+                    <input type="text" value={inputQuantity} onChange={(q) => setInputQuantity(q.target.value)} placeholder="3 unitats" className="input text-black input-bordered w-auto ml-2 bg-stone-200" />
+                    <div className="w-full flex justify-end">
+                        <button type="button"  onClick={addIngredient} className="mt-4 self-end btn rounded-md text-white mr-2">Afegir</button>
+                    </div>
+            </div>
+            <ul>
+                {ingredients.map((tuple, index) => (
+                <li key={index} className="text-black text-xl pb-2">
+                    <button className="btn btn-error btn-square btn-xs mr-4 ">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                    {tuple[0]}: {tuple[1]}
+                </li>
+                ))}
+            </ul>
+        </div>
     </div>
 }
