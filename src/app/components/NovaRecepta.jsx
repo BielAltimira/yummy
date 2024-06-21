@@ -6,10 +6,17 @@ export default function NovaRecepta({ setCurrentTab }) {
     const [inputQuantity, setInputQuantity] = useState('');
 
     const addIngredient = () =>{
-        setIngredients([...ingredients, [inputIngredient, inputQuantity]]);
+        setIngredients([[inputIngredient, inputQuantity], ...ingredients, ]);
+        setInputIngredient(''); 
+        setInputQuantity('');
     };
 
-    return <div className="h-screen -mt-8 w-full pt-16 flex flex-col">
+    const deleteIngredient = (index) => {
+        const updatedIngredients = ingredients.filter((_, i) => i !== index);
+        setIngredients(updatedIngredients);
+    };
+
+    return <div className=" w-full pt-8 flex flex-row">
         <div className="w-1/2 pl-4">
             <menu className="flex items-center justify-end gap-4 my-4">
                 <li><button onClick={() => setCurrentTab('no-selection')} className="btn btn-outline text-black rounded-md">Cancel·lar</button></li>
@@ -22,7 +29,7 @@ export default function NovaRecepta({ setCurrentTab }) {
                 </div>
                 <div className="mb-8">
                     <label className="block mb-2 text-sm font-bold uppercase text-stone-500">recepta</label>
-                    <textarea className="textarea textarea-bordered w-full bg-stone-200 text-black h-40" placeholder="Fer bullir aigua i afegir sal..."></textarea>
+                    <textarea className="textarea textarea-bordered w-full bg-stone-200 text-black h-[22rem]" placeholder="Fer bullir aigua i afegir sal..."></textarea>
                 </div>
                  <div className="mb-8">
                     <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Afegeix una imatge</label>
@@ -30,7 +37,7 @@ export default function NovaRecepta({ setCurrentTab }) {
                 </div>
             </form>
             <div className="mb-8">
-                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">llist d'Ingredients</label>
+                    <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Afegir Ingredients</label>
                     <div className="w-full flex flew-row">
                         <label className="mt-4 block mb-2 text-sm font-bold text-stone-500 w-2/3">Ingredient</label>
                         <label className="mt-4 block mb-2 text-sm font-bold text-stone-500 ml-2 w-auto">Quantitat</label>
@@ -41,13 +48,16 @@ export default function NovaRecepta({ setCurrentTab }) {
                         <button type="button"  onClick={addIngredient} className="mt-4 self-end btn rounded-md text-white mr-2">Afegir</button>
                     </div>
             </div>
-            <ul>
+        </div>
+        <div className="w-1/2 pl-16 pt-[5rem]">
+            <p className="block mb-2 text-sm font-bold uppercase text-stone-500">Llista d'ingredients</p>
+            <ul className="grid grid-cols-2 gap-4 pt-2">
                 {ingredients.map((tuple, index) => (
                 <li key={index} className="text-black text-xl pb-2">
-                    <button className="btn btn-error btn-square btn-xs mr-4 ">
+                    <button onClick={() => deleteIngredient(index)} className="btn btn-error btn-square btn-xs mr-4 ">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
-                    {tuple[0]}: {tuple[1]}
+                    <strong>{tuple[0]} </strong>: {tuple[1]}
                 </li>
                 ))}
             </ul>

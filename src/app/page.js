@@ -10,7 +10,7 @@ export default function Home() {
   const [currentTab, setCurrentTab] = useState('no-selection');
 
   return (
-    <main className="h-full pt-8 flex gap-8">
+    <main className="min-h-screen flex gap-8 ">
       <Sidebar setCurrentTab={setCurrentTab}/>
       <div className="flex align-center justify-center w-screen">
         {currentTab === 'no-selection' && <NoSelection setCurrentTab={setCurrentTab} />}
