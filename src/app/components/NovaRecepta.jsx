@@ -1,9 +1,19 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { Formik, useFormik } from "formik";
+import formatJSON from '../../utils/fomatJSON';
+import createUUID from '../../utils/createUUID';
+import getDate from '../../utils/getDate';
+import { supabase } from "../../lib/supabase";
+import { decode } from 'base64-arraybuffer'
+
+
 
 export default function NovaRecepta({ setCurrentTab }) {
     const [ingredients, setIngredients] = useState([]);
     const [inputIngredient, setInputIngredient] = useState('');
     const [inputQuantity, setInputQuantity] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
+    console.log(selectedFile);
 
     const addIngredient = () =>{
         setIngredients([[inputIngredient, inputQuantity], ...ingredients, ]);
@@ -16,24 +26,54 @@ export default function NovaRecepta({ setCurrentTab }) {
         setIngredients(updatedIngredients);
     };
 
+    const formik = useFormik({
+        initialValues: {
+            recepta: '',
+            descripcio: '',
+        },
+        onSubmit: async (values) => {
+            const {error} = await supabase.from('receptes').insert(
+                {id: createUUID(), data: getDate(), recepta: values.recepta, descripció: values.descripcio, ingredients: formatJSON(ingredients)}
+            );
+
+            const { data, errorImg } = await supabase.storage.from('receptes').upload("test.jng", selectedFile)
+            if (errorImg) {
+                console.log(errorImg)
+            } else {
+                console.log(data)
+                console.log("ASDASDASD")
+            }
+
+            console.log(error);
+            formik.resetForm()
+            setIngredients([]);
+        },
+    });
+
     return <div className=" w-full pt-8 flex flex-row">
         <div className="w-1/2 pl-4">
-            <menu className="flex items-center justify-end gap-4 my-4">
-                <li><button onClick={() => setCurrentTab('no-selection')} className="btn btn-outline text-black rounded-md">Cancel·lar</button></li>
-                <li><button className="btn btn-warning rounded-md ">Guardar</button></li>
-            </menu>
-            <form>
+            <form onSubmit={formik.handleSubmit}>
+                <menu className="flex items-center justify-end gap-4 my-4">
+                    <li><button onClick={() => setCurrentTab('no-selection')} className="btn btn-outline text-black rounded-md">Cancel·lar</button></li>
+                    <li><button type="submit" className="btn btn-warning rounded-md ">Guardar</button></li>
+                </menu>
                 <div className="mb-8">
                     <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Nom de la recepta</label>
-                    <input type="text" placeholder="Sopa de macaco" className="input text-black input-bordered w-full bg-stone-200" />
+                    <input id="recepta" type="text" placeholder="Sopa de macaco" className="input text-black input-bordered w-full bg-stone-200" 
+                      value={formik.values.recepta}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}/>
                 </div>
                 <div className="mb-8">
                     <label className="block mb-2 text-sm font-bold uppercase text-stone-500">recepta</label>
-                    <textarea className="textarea textarea-bordered w-full bg-stone-200 text-black h-[22rem]" placeholder="Fer bullir aigua i afegir sal..."></textarea>
+                    <textarea id="descripcio" className="textarea textarea-bordered w-full bg-stone-200 text-black h-[22rem]" placeholder="Fer bullir aigua i afegir sal..."
+                     value={formik.values.descripcio}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}></textarea>
                 </div>
                  <div className="mb-8">
                     <label className="block mb-2 text-sm font-bold uppercase text-stone-500">Afegeix una imatge</label>
-                    <input type="file" className="file-input file-input-bordered bg-stone-200 w-full max-w-xs" />
+                    <input onChange={(event) => setSelectedFile(event.target.files[0])} type="file" className="file-input file-input-bordered bg-stone-200 w-full max-w-xs" />
                 </div>
             </form>
             <div className="mb-8">
