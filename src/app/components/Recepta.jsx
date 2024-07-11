@@ -28,7 +28,8 @@ export default function recepta({ setCurrentTab, recipe}) {
             <p className='w-[80%] text-xl text-justify bg-zinc-300 p-8 mt-8 text-black'>{recepta.descripció}</p>
             <div className='flex flex-row p-12 align-center justify-between w-[70rem]'>
               <img
-                src="https://www.allrecipes.com/thmb/nhTXGubKmaQpmi4DZK_q1j2YGFk=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/20513-classic-waffles-mfs-025-4x3-81c0f0ace44d480ca69dd5f2c949731a.jpg"
+                className='w-1/2'
+                src={`https://dtpiwgvmonwyoblpnmto.supabase.co/storage/v1/object/public/receptes/${recepta.id}.jpg`}
                 alt="shoes"
               />
               <div >

@@ -1,10 +1,10 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { Formik, useFormik } from "formik";
 import formatJSON from '../../utils/fomatJSON';
 import createUUID from '../../utils/createUUID';
 import getDate from '../../utils/getDate';
 import { supabase } from "../../lib/supabase";
-import { decode } from 'base64-arraybuffer'
 
 
 
@@ -32,13 +32,14 @@ export default function NovaRecepta({ setCurrentTab }) {
             descripcio: '',
         },
         onSubmit: async (values) => {
+            const id = createUUID();
             const {error} = await supabase.from('receptes').insert(
-                {id: createUUID(), data: getDate(), recepta: values.recepta, descripció: values.descripcio, ingredients: formatJSON(ingredients)}
+                {id: id, data: getDate(), recepta: values.recepta, descripció: values.descripcio, ingredients: formatJSON(ingredients)}
             );
 
-            const { data, errorImg } = await supabase.storage.from('receptes').upload("test.jng", selectedFile)
-            if (errorImg) {
-                console.log(errorImg)
+            const { data, error: uploadError} = await supabase.storage.from('receptes').upload(`${id}.jpg`, selectedFile)
+            if (uploadError) {
+                console.log(uploadError)
             } else {
                 console.log(data)
                 console.log("ASDASDASD")

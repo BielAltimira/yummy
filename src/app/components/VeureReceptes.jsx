@@ -44,8 +44,7 @@ function VeureReceptes({setCurrentTab, setRecipe}) {
         <div key={recipe.id} className=" card bg-base-100 w-96 h-[30rem] shadow-xl">
           <figure>
             <img
-              // src="https://dtpiwgvmonwyoblpnmto.supabase.co/storage/v1/object/public/receptes/test"
-              src="https://www.allrecipes.com/thmb/nhTXGubKmaQpmi4DZK_q1j2YGFk=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/20513-classic-waffles-mfs-025-4x3-81c0f0ace44d480ca69dd5f2c949731a.jpg"
+              src={`https://dtpiwgvmonwyoblpnmto.supabase.co/storage/v1/object/public/receptes/${recipe.id}.jpg`}
               alt="shoes"
             />
           </figure>
