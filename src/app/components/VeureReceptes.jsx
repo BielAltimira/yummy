@@ -41,7 +41,7 @@ function VeureReceptes({setCurrentTab, setRecipe}) {
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-[7rem] pt-16 pb-16'>
         {recipes.map((recipe) => (
-        <div key={recipe.id} className=" card bg-base-100 w-96 h-[30rem] shadow-xl">
+        <div key={recipe.id} className=" card bg-black w-96 h-[30rem] shadow-xl">
           <figure>
             <img
               src={`https://dtpiwgvmonwyoblpnmto.supabase.co/storage/v1/object/public/receptes/${recipe.id}.jpg`}
